@@ -18,7 +18,7 @@ function loadSongs() {
             const songs = Array.from(data);
             var songTags = "";
             for (let i = 0; i < songs.length; i++) {
-                songTags += "<tr onclick=playSelectedRow('" + songs[i].artist + "','" + songs[i].title + "','" + songs[i].location + "'); ><th scope=\"row\">" + (i + 1) + "</th><td>" + songs[i].title + "</td><td>" + songs[i].artist + "</td><td>" + songs[i].genre + "</td><td>" + songs[i].date + "</td><td>" + songs[i].likes + "</td></tr>"
+                songTags += "<tr onclick=playSelectedRow('" + songs[i].artist + "','" + songs[i].title + "','" + songs[i].location + "'); ><th scope=\"row\">" + (i + 1) + "</th><td>" + songs[i].title + "</td><td>" + songs[i].artist + "</td><td>" + songs[i].genre + "</td><td>" + songs[i].date + "</td><td>" + songs[i].likes + "<span style=\"color: red;\" class=\"glyphicon glyphicon-heart\" aria-hidden=\"true\"></span></td></tr>";
             }
             document.getElementById("table-body").innerHTML = songTags;
         }

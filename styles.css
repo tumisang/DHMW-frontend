@@ -19,3 +19,7 @@
 .table-hover tbody tr:hover th {
     background-color: rgba(1, 55, 6, 0.505);
 }
+
+#playlist-table tbody tr{
+    font-size: 18px;
+}
