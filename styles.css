@@ -1,0 +1,21 @@
+#body {
+    height: 200px;
+    background-image: linear-gradient(to right, rgba(255, 0, 0, 0.059), rgba(9, 0, 36, 0.699));
+}
+
+#playlist-section::-webkit-scrollbar {
+    display: none;
+}
+
+/* Hide scrollbar for IE, Edge and Firefox */
+#playlist-section {
+    -ms-overflow-style: none;
+    /* IE and Edge */
+    scrollbar-width: none;
+    /* Firefox */
+}
+
+.table-hover tbody tr:hover td,
+.table-hover tbody tr:hover th {
+    background-color: rgba(1, 55, 6, 0.505);
+}
