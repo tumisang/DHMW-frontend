@@ -4,6 +4,7 @@ var loop = true;
 var mute = true;
 var liked = true;
 var currentTitlePlaying;
+var songLikes = 0;
 
 $(document).ready(function () {
     loadSongs();
@@ -11,19 +12,6 @@ $(document).ready(function () {
         songbarRange();
     }, 1000);
 });
-
-function loadSongs() {
-    $.get("http://127.0.0.1:8081/songs/all", function (data, status) {
-        if (status == "success") {
-            const songs = Array.from(data);
-            var songTags = "";
-            for (let i = 0; i < songs.length; i++) {
-                songTags += "<tr onclick=playSelectedRow('" + songs[i].artist + "','" + songs[i].title + "','" + songs[i].location + "'); ><th scope=\"row\">" + (i + 1) + "</th><td>" + songs[i].title + "</td><td>" + songs[i].artist + "</td><td>" + songs[i].genre + "</td><td>" + songs[i].date + "</td><td>" + songs[i].likes + "<span style=\"color: red;\" class=\"glyphicon glyphicon-heart\" aria-hidden=\"true\"></span></td></tr>";
-            }
-            document.getElementById("table-body").innerHTML = songTags;
-        }
-    });
-};
 
 function songbarRange() {
     var songBar = document.getElementById("song-bar");
@@ -60,7 +48,7 @@ function controlSong(time) {
     changeStartTime(time);
 };
 
-function playSelectedRow(artist, title, location) {
+function playSelectedRow(artist, title, location, likes) {
     document.getElementById("song-playing").innerText = artist + " - " + title;
     document.getElementById("song-bar").setAttribute("value", 0);
     document.getElementById("like-button").setAttribute("class", "btn btn-md pull-right");
@@ -71,6 +59,7 @@ function playSelectedRow(artist, title, location) {
     togglePlayIcon();
     currentTitlePlaying = title;
     liked = true;
+    songLikes = likes;
 };
 
 function togglePlayIcon() {
@@ -156,13 +145,13 @@ function toggleLike() {
 }
 
 function incrementTitleLikes(likedButton) {
-    var url = "http://127.0.0.1:8081/songs/like/" + currentTitlePlaying;
-    $.get(url, function (data, status) {
-        if (status == "success") {
-            likedButton.setAttribute("class", "btn btn-md btn-danger pull-right");
-            liked = false;
-            loadSongs();
-        }
+    songLikes++;
+    $.ajax({
+        url: "api/v1/likeSong.php?title=" + currentTitlePlaying + "&likes=" + songLikes
+    }).done(function (data) {
+        likedButton.setAttribute("class", "btn btn-danger btn-md pull-right");
+        liked = false;
+        loadSongs();
     });
 };
 
@@ -175,4 +164,61 @@ function search() {
             return !~text.indexOf(val);
         }).hide();
     });
+}
+
+function loadSongs() {
+    $.ajax({
+        url: "api/v1/getAllSongs.php"
+    }).done(function (data) {
+        const songs = JSON.parse(data);
+        var songTags = "";
+        for (let i = 0; i < songs.length; i++) {
+            songTags += "<tr onclick=playSelectedRow('" + songs[i].artist + "','" + songs[i].title + "','" + songs[i].location + "','" + songs[i].likes + "'); ><th scope=\"row\">" + (i + 1) + "</th><td>" + songs[i].title + "</td><td>" + songs[i].artist + "</td><td>" + songs[i].genre + "</td><td>" + formatDateTime(new Date(songs[i].date))+ "</td><td>" + songs[i].likes + "<span style=\"color: red;\" class=\"glyphicon glyphicon-heart\" aria-hidden=\"true\"></span></td></tr>";
+        }
+        document.getElementById("table-body").innerHTML = songTags;
+    });
+}
+
+function formatDateTime(date) {
+    var year = date.getFullYear();
+    var month = getMonth(String(date.getMonth() + 1).padStart(2, '0'));
+    var day = String(date.getDate()).padStart(2, '0');
+    return `${day} ${month} ${year}`;
+}
+
+function getMonth(month) {
+    if (month === "01") {
+        return "Jan";
+    } else if (month === "02") {
+        return "Feb";
+    } else if (month === "03") {
+        return "Mar";
+    } else if (month === "04") {
+        return "Apr";
+    } else if (month === "05") {
+        return "May";
+    } else if (month === "06") {
+        return "Jun";
+    } else if (month === "07") {
+        return "Jul";
+    } else if (month === "08") {
+        return "Aug";
+    } else if (month === "09") {
+        return "Sep";
+    } else if (month === "10") {
+        return "Oct";
+    } else if (month === "11") {
+        return "Nov";
+    } else if (month === "12") {
+        return "Dec";
+    }
+}
+
+function myFunction() {
+    setTimeout(showPage, 1000);
+}
+
+function showPage() {
+    document.getElementById("loader").style.display = "none";
+    document.getElementById("myDiv").style.display = "block";
 }
