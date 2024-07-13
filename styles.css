@@ -25,6 +25,12 @@
     font-family: Georgia, serif;
 }
 
+#playlist-control {
+    position: fixed;
+    bottom: 0;
+    width: 90%;
+}
+
 #loader {
     position: absolute;
     left: 50%;
