@@ -51,7 +51,12 @@ function controlSong(time) {
 function playSelectedRow(artist, title, location, likes) {
     document.getElementById("song-playing").innerText = artist + " - " + title;
     document.getElementById("song-bar").setAttribute("value", 0);
-    document.getElementById("like-button").setAttribute("class", "btn btn-md pull-right");
+    var likeButtonSpan = document.getElementById("like-button-span");
+    likeButtonSpan.setAttribute("class", "glyphicon glyphicon-heart-empty");
+    likeButtonSpan.setAttribute("style", "");
+    var downloadButton = document.getElementById("download-button");
+    downloadButton.setAttribute("download", title);
+    downloadButton.setAttribute("href", location);
     var audio = document.getElementById("player");
     audio.src = location;
     audio.load();
@@ -135,21 +140,23 @@ function toggleMute(element) {
 };
 
 function toggleLike() {
-    var likedButton = document.getElementById("like-button");
+    var likeButtonSpan = document.getElementById("like-button-span");
     if (liked) {
-        incrementTitleLikes(likedButton);
-    } else {
-        likedButton.setAttribute("class", "btn btn-md pull-right");
+        incrementTitleLikes(likeButtonSpan);
+    } else {        
+        likeButtonSpan.setAttribute("class", "glyphicon glyphicon-heart-empty");
+        likeButtonSpan.setAttribute("style", "");
         liked = true;
     }
 }
 
-function incrementTitleLikes(likedButton) {
+function incrementTitleLikes(likeButtonSpan) {
     songLikes++;
     $.ajax({
         url: "api/v1/likeSong.php?title=" + currentTitlePlaying + "&likes=" + songLikes
     }).done(function (data) {
-        likedButton.setAttribute("class", "btn btn-danger btn-md pull-right");
+        likeButtonSpan.setAttribute("class", "glyphicon glyphicon-heart");
+        likeButtonSpan.setAttribute("style", "color: red;");
         liked = false;
         loadSongs();
     });

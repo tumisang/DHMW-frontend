@@ -45,15 +45,42 @@
                 </tbody>
             </table>
         </div>
-        <div id="playlist-control" style="padding: 6px;">
+        <div id="playlist-control" style="padding: 6px;">  
             <div class="row">
-                <div class="col-md-2 text-center">
+                <div class="col-md-12 text-center">
                     <img id="playerPic" src="asset/images/logo.png" width="125" height="125" class="rounded" alt="speaker">
                 </div>
-                <div class="col-md-8">
-                    <div class="row text-center">
-                        <h4 id="song-playing">Nothing Playing</h4>
-                    </div>
+            </div>
+            <div class="row">
+                <div class="col-xs-2 pull-left">
+                    <button class="btn btn-md btn-link" type="button" id="like-button" onclick="toggleLike()">
+                        <span class="glyphicon glyphicon-heart-empty" id="like-button-span" aria-hidden="true"></span>
+                    </button>
+                </div>
+                <div class="col-xs-8 text-center">
+                    <h4 id="song-playing">Nothing Playing</h4>
+                </div>
+                <div class="col-xs-2 pull-right">
+                    <a href="asset/music/nothing_playing.mp3" download="nothing_playing" id="download-button">
+                        <button class="btn btn-md pull-right btn-warning">
+                            <span class="glyphicon glyphicon-download-alt" id="like-button-span" aria-hidden="true"></span>
+                        </button>
+                      </a>
+                </div>
+            </div>          
+            <div class="row">
+                <div class="col-md-12" id="song-play-bar">
+                    <input type="range" class="form-range range-primary" id="song-bar" min="0" max="1000" value="0" step="1" onchange="controlSong(this.value)">
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-md-12">
+                    <span id="start-time">00:00:00</span>
+                    <span id="end-time" class="pull-right">00:00:00</span>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-md-12">                    
                     <div class="row text-center">
                         <div class="col-md-12">
                             <button class="btn btn-primary btn-sm" id="repeatButton" type="button" onclick="toggleRepeat(this);">
@@ -74,23 +101,7 @@
                             </button>
                         </div>
                     </div>
-                </div>
-                <div class="col-md-2">
-                    <button class="btn btn-md pull-right" type="button" id="like-button" onclick="toggleLike()">
-                        <span class="glyphicon glyphicon-heart" id="like-button-span" aria-hidden="true"></span>
-                    </button>
-                </div>
-            </div>
-            <div class="row">
-                <div class="col-md-12" id="song-play-bar">
-                    <input type="range" class="form-range range-primary" id="song-bar" min="0" max="1000" value="0" step="1" onchange="controlSong(this.value)">
-                </div>
-            </div>
-            <div class="row">
-                <div class="col-md-12">
-                    <span id="start-time">00:00:00</span>
-                    <span id="end-time" class="pull-right">00:00:00</span>
-                </div>
+                </div>                
             </div>
         </div>
     </div>
