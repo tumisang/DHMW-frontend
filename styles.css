@@ -127,3 +127,106 @@
         font-size: 15px;
     }
 }
+
+@media screen and (max-width: 550px) {
+    #playlist-section {
+        height: 300px;
+    }
+
+    #playlist-table tbody tr,
+    #playlist-table thead tr {
+        font-size: 10px;
+    }
+
+    #playerPic {
+        height: 70px;
+        width: 70px;
+    }
+
+    #search-section {
+        height: 30px;
+    }
+
+    #head-line {
+        font-size: 10px;
+    }
+}
+
+@media screen and (max-width: 420px) {
+    #playlist-section {
+        height: 300px;
+    }
+
+    #playlist-table tbody tr,
+    #playlist-table thead tr {
+        font-size: 8px;
+    }
+
+    #playerPic {
+        height: 65px;
+        width: 65px;
+    }
+
+    #search-section {
+        height: 25px;
+    }
+
+    #head-line {
+        font-size: 8px;
+    }
+}
+
+@media screen and (max-width: 360px) {
+    #playlist-section {
+        height: 300px;
+    }
+
+    #playlist-table tbody tr,
+    #playlist-table thead tr {
+        font-size: 5px;
+    }
+
+    #playerPic {
+        height: 65px;
+        width: 65px;
+    }
+
+    #search-section {
+        height: 25px;
+    }
+
+    #head-line {
+        font-size: 5px;
+    }
+}
+
+@media screen and (max-width: 290px) {
+    #playlist-section {
+        height: 300px;
+    }
+
+    #playlist-table tbody tr,
+    #playlist-table thead tr {
+        font-size: 4px;
+    }
+
+    #playerPic {
+        height: 65px;
+        width: 65px;
+    }
+
+    #search-section {
+        height: 25px;
+    }
+
+    #head-line {
+        font-size: 4px;
+    }
+}
+
+.modal-centered {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 100vh; /* Set minimum height to full screen */
+}

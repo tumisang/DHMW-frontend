@@ -29,7 +29,7 @@
             </div>
         </div>
         <div id="playlist-section" height="100"
-            style="padding-left: 6px; padding-right: 6px; overflow: auto; max-height: 300px;">
+            style="overflow: auto; max-height: 300px;">
             <table class="table table-hover" id="playlist-table">
                 <thead style="position: sticky; top: 0; z-index: 10; background-color: rgb(65, 10, 138); color: white;">
                     <tr>
@@ -114,25 +114,27 @@
     </div>
 
     <!-- Modal -->
-    <div class="modal fade" id="songPlayer" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" >
-        <div class="modal-dialog modal-dialog-centered" role="document">
+    <div class="modal fade" id="songPlayer" tabindex="-1" role="dialog" aria-labelledby="songPlayerModalTitle" aria-hidden="true">
+        <div class="modal-dialog modal-centered" role="document">
             <div class="modal-content">
                 <div class="modal-body">
-                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                        <span>&times;</span>
-                    </button>
+                    <div class="row" style="padding-right:10px;">
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                            <span class="glyphicon glyphicon-chevron-down"></span>
+                        </button>
+                    </div>
                     <div class="row">
                         <div class="col-md-12 text-center">
                             <img id="songPlayerPic" src="asset/images/logo.png" width="125" height="125" class="rounded" alt="speaker">
                         </div>
                     </div>
-                    <div class="row">
-                        <div class="col-xs-12 text-center">
-                            <h4 id="song-player-playing">Nothing Playing</h4>
-                        </div>
-                    </div>
                 </div>
                 <div class="modal-footer">
+                    <div class="row">
+                        <div class="col-md-12 text-center">
+                            <h5 id="song-player-playing">Nothing Playing</h5>
+                        </div>
+                    </div>
                     <div class="row">
                         <div class="col-md-12" id="song-player-bar">
                             <input type="range" class="form-range range-primary" id="song-bar-2" min="0" max="1000" value="0" step="1" onchange="controlSong(this.value)" />
