@@ -5,15 +5,16 @@ var mute = true;
 var liked = true;
 var currentTitlePlaying;
 var songLikes = 0;
+var trackNumber = 0;
 
 $(document).ready(function () {
     loadSongs();
     setInterval(function () {
-        songbarRange();
+        songBarRange();
     }, 1000);
 });
 
-function songbarRange() {
+function songBarRange() {
     var songBar = document.getElementById("song-bar");
     var audio = document.getElementById("player");
     var songPlayerBar = document.getElementById("song-play-bar");
@@ -29,16 +30,22 @@ function songbarRange() {
 
 function changeStartTime(time) {
     var date = new Date(null);
-    date.setSeconds(time);
-    var starTime = date.toISOString().substr(11, 8);
-    document.getElementById("start-time").innerHTML = starTime;
+    if(time !== null){
+        date.setSeconds(time);
+        var starTime = date.toISOString().substr(11, 8);
+        document.getElementById("start-time").innerHTML = starTime;
+        document.getElementById("song-player-start-time").innerHTML = starTime;
+    }
 };
 
 function changeEndTime(time) {
     var date = new Date(null);
-    date.setSeconds(time);
-    var starTime = date.toISOString().substr(11, 8);
-    document.getElementById("end-time").innerHTML = starTime;
+    if(time !== null){
+        date.setSeconds(time);
+        var starTime = date.toISOString().substr(11, 8);
+        document.getElementById("end-time").innerHTML = starTime;
+        document.getElementById("song-player-end-time").innerHTML = starTime;
+    }
 }
 
 function controlSong(time) {
@@ -48,7 +55,8 @@ function controlSong(time) {
     changeStartTime(time);
 };
 
-function playSelectedRow(artist, title, location, likes) {
+function playInlineSong(number, artist, title, location, likes) {
+    trackNumber = number;
     document.getElementById("song-playing").innerText = artist + " - " + title;
     document.getElementById("song-bar").setAttribute("value", 0);
     var likeButtonSpan = document.getElementById("like-button-span");
@@ -65,11 +73,19 @@ function playSelectedRow(artist, title, location, likes) {
     currentTitlePlaying = title;
     liked = true;
     songLikes = likes;
-};
+}
 
 function togglePlayIcon() {
+    var playButtonSpanElements = document.getElementsByClassName("glyphicon glyphicon-pause");
+    for (let i = 0; i < playButtonSpanElements.length; i++) {
+      playButtonSpanElements[i].setAttribute("class", "glyphicon glyphicon-play");
+    }
     var playButtonIcon = document.getElementById("play-button-icon");
+    var songPlayerPlayButtonIcon = document.getElementById("song-player-play-button-icon");
+    var playButtonIconItem = document.getElementById("play-button-icon-"+trackNumber);
     playButtonIcon.setAttribute("class", "glyphicon glyphicon-pause");
+    songPlayerPlayButtonIcon.setAttribute("class", "glyphicon glyphicon-pause");
+    playButtonIconItem.setAttribute("class", "glyphicon glyphicon-pause");
     if (!playing) {
         var audio = document.getElementById("player");
         audio.play();
@@ -79,7 +95,11 @@ function togglePlayIcon() {
 
 function togglePauseIcon() {
     var playButtonIcon = document.getElementById("play-button-icon");
+    var songPlayerPlayButtonIcon = document.getElementById("song-player-play-button-icon");
+    var playButtonIconItem = document.getElementById("play-button-icon-"+trackNumber);
     playButtonIcon.setAttribute("class", "glyphicon glyphicon-play");
+    songPlayerPlayButtonIcon.setAttribute("class", "glyphicon glyphicon-play");
+    playButtonIconItem.setAttribute("class", "glyphicon glyphicon-play");
     if (playing) {
         var audio = document.getElementById("player");
         audio.pause();
@@ -100,7 +120,7 @@ function fastBackward() {
     audio.currentTime -= 15;
 };
 
-function fastFoward() {
+function fastForward() {
     var audio = document.getElementById("player");
     audio.currentTime += 15;
 };
@@ -113,14 +133,16 @@ function songBar(duration) {
     songBar.setAttribute("max", songDuration);
 };
 
-function toggleRepeat(element) {
+function toggleRepeat() {
     var audio = document.getElementById("player");
     if (loop) {
-        document.getElementById(element.id).setAttribute("class", "btn btn-success btn-sm");
+        document.getElementById("repeatSongPlayerButton").setAttribute("class", "btn btn-success btn-sm");
+        document.getElementById("repeatButton").setAttribute("class", "btn btn-success btn-sm");
         audio.loop = true;
         loop = false;
     } else {
-        document.getElementById(element.id).setAttribute("class", "btn btn-primary btn-sm");
+        document.getElementById("repeatSongPlayerButton").setAttribute("class", "btn btn-primary btn-sm");
+        document.getElementById("repeatButton").setAttribute("class", "btn btn-primary btn-sm");
         audio.loop = false;
         loop = true;
     }
@@ -129,11 +151,13 @@ function toggleRepeat(element) {
 function toggleMute(element) {
     var audio = document.getElementById("player");
     if (mute) {
-        document.getElementById(element.id).setAttribute("class", "btn btn-success btn-sm");
+        document.getElementById("muteSongPlayerButton").setAttribute("class", "btn btn-success btn-sm");
+        document.getElementById("muteButton").setAttribute("class", "btn btn-success btn-sm");
         audio.muted = true;
         mute = false;
     } else {
-        document.getElementById(element.id).setAttribute("class", "btn btn-primary btn-sm");
+        document.getElementById("muteSongPlayerButton").setAttribute("class", "btn btn-primary btn-sm");
+        document.getElementById("muteButton").setAttribute("class", "btn btn-primary btn-sm");
         audio.muted = false;
         mute = true;
     }
@@ -180,10 +204,21 @@ function loadSongs() {
         const songs = JSON.parse(data);
         var songTags = "";
         for (let i = 0; i < songs.length; i++) {
-            songTags += "<tr onclick=playSelectedRow('" + songs[i].artist + "','" + songs[i].title + "','" + songs[i].location + "','" + songs[i].likes + "'); ><th scope=\"row\">" + (i + 1) + "</th><td>" + songs[i].title + "</td><td>" + songs[i].artist + "</td><td>" + songs[i].genre + "</td><td>" + formatDateTime(new Date(songs[i].date))+ "</td><td>" + songs[i].likes + "<span style=\"color: red;\" class=\"glyphicon glyphicon-heart\" aria-hidden=\"true\"></span></td></tr>";
+            songTags += "<tr><td><button class=\"btn btn-primary btn-xs\" type=\"button\" id=\"play-button-"+ (i + 1) + "\" onclick=playInlineSong('" + (i + 1)  + "','" + songs[i].artist + "','" + songs[i].title + "','" + songs[i].location + "','" + songs[i].likes + "');> <span class=\"glyphicon glyphicon-play\" class=\"play-button-icon\" id=\"play-button-icon-"+ (i + 1) + "\" aria-hidden=\"true\"></span> </button></td><td onclick=playSelectedSong('" + (i + 1)  + "','" + songs[i].artist + "','" + songs[i].title + "','" + songs[i].location + "','" + songs[i].likes + "'); >" + (i + 1) + "</td><td onclick=playSelectedSong('" + (i + 1)  + "','" + songs[i].artist + "','" + songs[i].title + "','" + songs[i].location + "','" + songs[i].likes + "');>" + songs[i].title + "</td><td onclick=playSelectedSong('" + (i + 1)  + "','" + songs[i].artist + "','" + songs[i].title + "','" + songs[i].location + "','" + songs[i].likes + "');>" + songs[i].artist + "</td><td onclick=playSelectedSong('" + (i + 1)  + "','" + songs[i].artist + "','" + songs[i].title + "','" + songs[i].location + "','" + songs[i].likes + "');>" + songs[i].genre + "</td><td onclick=playSelectedSong('" + (i + 1)  + "','" + songs[i].artist + "','" + songs[i].title + "','" + songs[i].location + "','" + songs[i].likes + "');>" + formatDateTime(new Date(songs[i].date))+ "</td><td onclick=playSelectedSong('" + (i + 1)  + "','" + songs[i].artist + "','" + songs[i].title + "','" + songs[i].location + "','" + songs[i].likes + "');>" + songs[i].likes + "<span style=\"color: red;\" class=\"glyphicon glyphicon-heart\" aria-hidden=\"true\"></span></td></tr>";
         }
         document.getElementById("table-body").innerHTML = songTags;
+        if(playing){
+            togglePlayIcon();
+        }
     });
+}
+
+function playSelectedSong(number, artist, title, location, likes){
+    $('#songPlayer').modal('show');
+    document.getElementById("song-player-playing").innerText = artist + " - " + title;
+    if(currentTitlePlaying !== title){
+        playInlineSong(number, artist, title, location, likes);
+    }
 }
 
 function formatDateTime(date) {

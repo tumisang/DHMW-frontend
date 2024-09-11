@@ -1,6 +1,6 @@
 #body {
     height: 200px;
-    background-image: linear-gradient(to right, rgba(255, 0, 0, 0.059), rgba(9, 0, 36, 0.699));
+    background-image: linear-gradient(to right, rgba(200, 0, 0, 0.08), rgba(9, 0, 36, 0.7));
 }
 
 #playlist-section::-webkit-scrollbar {
@@ -28,7 +28,8 @@
 #playlist-control {
     position: fixed;
     bottom: 0;
-    width: 90%;
+    width: 100%;
+    right: 0;
 }
 
 #loader {
@@ -103,26 +104,26 @@
     }
 }
 
-@media screen and (max-width: 650px) {
+@media screen and (max-width: 770px) {
     #playlist-section {
         height: 300px;
     }
 
     #playlist-table tbody tr,
     #playlist-table thead tr {
-        font-size: 10px;
+        font-size: 15px;
     }
 
     #playerPic {
-        height: 70px;
-        width: 70px;
+        height: 75px;
+        width: 75px;
     }
 
     #search-section {
-        height: 30px;
+        height: 35px;
     }
 
     #head-line {
-        font-size: 10px;
+        font-size: 15px;
     }
 }
